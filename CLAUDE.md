@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## 项目概述
 
-这是一个基于 Python 的内存管理 MCP (Model Context Protocol) 项目，使用 LangChain 框架。项目名称为 `hc-mem`，目前处于早期开发阶段 (v0.1.0)。
+这是一个基于 Python 的内存管理 MCP (Model Context Protocol) 项目, 使用 LangChain 框架. 项目名称为 `hc-mem`, 目前处于早期开发阶段 (v0.1.0).
 
 ## 项目结构
 
@@ -24,7 +24,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## 开发环境设置
 
 ### 依赖管理
-项目使用 `uv` 作为包管理器，Python 版本要求 >= 3.12
+项目使用 `uv` 作为包管理器, Python 版本要求 >= 3.12
 
 主要依赖：
 - `langchain>=1.0.5` - LangChain 框架
@@ -55,6 +55,10 @@ source .venv/bin/activate  # Linux/Mac
 
 ## 开发注意事项
 
-1. 项目目前处于初始化阶段，大部分文件为空
-2. 使用 LangChain 框架进行内存管理相关开发
-3. 遵循分层架构原则，业务逻辑放在 app 层，基础设施放在 inf 层
+### 项目规范
+1. 项目目前处于初始化阶段, 大部分文件为空
+2. 遵循分层架构原则, 业务逻辑放在 app 层, 基础设施放在 inf 层
+3. 注释内容使用中文, 标点符号使用英文
+
+### MCP工具
+1. 当生成代码时, 尽可能使用Context7工具来获取正确的API文档.
