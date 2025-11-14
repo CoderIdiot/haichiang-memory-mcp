@@ -29,25 +29,27 @@ class Settings(BaseSettings):
     """Global settings class"""
 
     # Application settings
-    app_name: str = Field(default="hc-mem", validation_alias="APP_NAME")
-    app_version: str = Field(default="0.1.0", validation_alias="APP_VERSION")
-    debug: bool = Field(default=False, validation_alias="DEBUG")
+    app_name: str = Field(default="hc-mem", alias="APP_NAME")
+    app_version: str = Field(default="0.1.0", alias="APP_VERSION")
+    debug: bool = Field(default=False, alias="DEBUG")
 
     # DeepSeek configuration
-    deepseek_api_url: str = Field(default='', validation_alias="DEEPSEEK_API_URL")
-    deepseek_api_key: str = Field(default='', validation_alias="DEEPSEEK_API_KEY")
-    deepseek_api_model: str = Field(default="", validation_alias="DEEPSEEK_API_MODEL")
+    deepseek_api_url: str = Field(default='', alias="DEEPSEEK_API_URL")
+    deepseek_api_key: str = Field(default='', alias="DEEPSEEK_API_KEY")
+    deepseek_thinking_model: str = Field(default="", alias="DEEPSEEK_THINKING_MODEL")
+    deepseek_no_thinking_model: str = Field(default="", alias="DEEPSEEK_NO_THINKING_MODEL")
 
     # Qwen configuration
-    qwen_api_url: str = Field(default='', validation_alias="Qwen_API_URL")
-    qwen_api_key: str = Field(default='', validation_alias="Qwen_API_KEY")
-    qwen_api_embedding_model: str = Field(default="", validation_alias="Qwen_API_EMBEDDING_MODEL")
+    qwen_api_url: str = Field(default="", alias="DASHSCOPE_BASE_URL")
+    qwen_api_key: str = Field(default='', alias="DASHSCOPE_API_KEY")
+    qwen_api_embedding_model: str = Field(default="text-embedding-v4", alias="QWEN_EMBEDDING_MODEL")
 
 
     model_config = {
         "env_file": str(PROJECT_ROOT / ".env"),
         "env_file_encoding": "utf-8",
-        "extra": "ignore"
+        "extra": "ignore",
+        "populate_by_name": True
     }
 
 
