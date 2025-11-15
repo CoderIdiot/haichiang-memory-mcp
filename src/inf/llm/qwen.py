@@ -7,14 +7,8 @@ from typing import List, Optional, Dict, Any
 from openai import OpenAI
 from pydantic import BaseModel
 
-# from conf import logger  # 暂时注释掉，因为 conf 模块不存在
-import logging
-
-# 设置简单的日志
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
-from inf.env.env_conf import get_settings
-
+from conf import logger
+from src.inf.env.env_conf import G_Settings
 
 class EmbeddingResponse(BaseModel):
     """向量生成响应模型"""
@@ -35,7 +29,7 @@ class QwenLLMClient:
             api_key: 阿里云百炼 API Key, 如果不提供则从环境变量读取
             base_url: API 基础 URL, 如果不提供则使用默认值
         """
-        settings = get_settings()
+        settings = G_Settings
 
         self.api_key = api_key or settings.qwen_api_key
         self.base_url = base_url or settings.qwen_api_url

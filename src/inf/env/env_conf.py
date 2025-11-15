@@ -54,16 +54,13 @@ class Settings(BaseSettings):
 
 
 # Create global settings instance
-settings = Settings()
+G_Settings = Settings()
 
-
-def get_settings() -> Settings:
-    """Get settings instance"""
-    return settings
 
 if __name__ == "__main__":
     try:
-        settings = Settings()
+        logger.info("Loading .env file...")
+        logger.info(f'Global Settings: {G_Settings}')
         logger.info("Settings loaded successfully")
     except Exception as e:
         logger.error(f"Error loading .env file: {e}")
