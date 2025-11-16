@@ -43,6 +43,7 @@ class Settings(BaseSettings):
     qwen_api_url: str = Field(default="", alias="DASHSCOPE_BASE_URL")
     qwen_api_key: str = Field(default='', alias="DASHSCOPE_API_KEY")
     qwen_api_embedding_model: str = Field(default="text-embedding-v4", alias="QWEN_EMBEDDING_MODEL")
+    qwen_api_embedding_dim: int = Field(default=1024, alias="QWEN_EMBEDDING_DIM")
 
 
     model_config = {

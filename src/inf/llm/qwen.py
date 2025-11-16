@@ -3,19 +3,12 @@ Qwen LLM 客户端模块
 提供基于阿里云百炼的向量生成服务
 """
 
-from typing import List, Optional, Dict, Any
+from typing import List, Optional, Sequence, Dict
 from openai import OpenAI
-from pydantic import BaseModel
 
 from conf import logger
 from src.inf.env.env_conf import G_Settings
 
-class EmbeddingResponse(BaseModel):
-    """向量生成响应模型"""
-    object: str = "list"
-    data: List[Dict[str, Any]]
-    model: str
-    usage: Optional[Dict[str, int]] = None
 
 
 class QwenLLMClient:
@@ -44,91 +37,44 @@ class QwenLLMClient:
             base_url=self.base_url
         )
 
-    def generate_embedding(self, text: str, model: Optional[str] = None) -> EmbeddingResponse:
+    
+    def get_embedding_vector(self, texts: Sequence[str], model: Optional[str] = None) -> List[List[float]]:
         """
-        生成文本的向量表示
+        获取文本序列的向量数据（批量处理接口）
 
         Args:
-            text: 输入文本
-            model: 使用的向量模型, 如果不提供则使用默认模型
+            texts: 输入文本序列
+            model: 使用的向量模型
 
         Returns:
-            EmbeddingResponse: 包含向量数据的响应对象
-
-        Raises:
-            Exception: API 调用失败时抛出异常
-        """
-        if not text.strip():
-            raise ValueError("输入文本不能为空")
-
-        try:
-            # 使用指定模型或默认模型
-            embedding_model = model or self.embedding_model
-
-            # 调用向量生成 API
-            completion = self.client.embeddings.create(
-                model=embedding_model,
-                input=text
-            )
-
-            # 转换为标准响应格式
-            response_data = completion.model_dump()
-
-            return EmbeddingResponse(**response_data)
-
-        except Exception as e:
-            raise Exception(f"向量生成失败: {str(e)}")
-
-    def generate_batch_embeddings(self, texts: List[str], model: Optional[str] = None) -> EmbeddingResponse:
-        """
-        批量生成文本的向量表示
-
-        Args:
-            texts: 输入文本列表
-            model: 使用的向量模型, 如果不提供则使用默认模型
-
-        Returns:
-            EmbeddingResponse: 包含向量数据的响应对象
-
-        Raises:
-            Exception: API 调用失败时抛出异常
+            List[List[float]]: 向量数据列表
         """
         if not texts:
-            raise ValueError("输入文本列表不能为空")
+            return []
+
+        # 如果是单个文本，转换为列表格式
+        if isinstance(texts, str):
+            texts = [texts]
 
         # 过滤空文本
         valid_texts = [text.strip() for text in texts if text.strip()]
         if not valid_texts:
-            raise ValueError("输入文本列表中至少需要一个非空文本")
+            return []
 
         try:
             embedding_model = model or self.embedding_model
 
+            # 直接调用客户端的 embeddings API
             completion = self.client.embeddings.create(
                 model=embedding_model,
                 input=valid_texts
             )
 
-            response_data = completion.model_dump()
-
-            return EmbeddingResponse(**response_data)
+            # 提取向量数据
+            return [item.embedding for item in completion.data]
 
         except Exception as e:
-            raise Exception(f"批量向量生成失败: {str(e)}")
-
-    def get_embedding_vector(self, text: str, model: Optional[str] = None) -> List[float]:
-        """
-        获取文本的向量数据（简化接口）
-
-        Args:
-            text: 输入文本
-            model: 使用的向量模型
-
-        Returns:
-            List[float]: 向量数据
-        """
-        response = self.generate_embedding(text, model)
-        return response.data[0]["embedding"]
+            raise Exception(f"向量生成失败: {str(e)}")
 
     def get_client_info(self) -> Dict[str, str]:
         """
@@ -174,13 +120,9 @@ if __name__ == "__main__":
             print(f"  {key}: {value}")
         print()
 
-        # 生成向量
-        print("生成向量:")
-        response = client.generate_embedding(input_text)
-        print(response.model_dump_json(indent=2))
-
         # 获取向量数据
-        vector = client.get_embedding_vector(input_text)
+        vectors = client.get_embedding_vector([input_text])
+        vector = vectors[0]  # 获取第一个文本的向量
         print(f"\n向量维度: {len(vector)}")
         print(f"前5个值: {vector[:5]}")
 
