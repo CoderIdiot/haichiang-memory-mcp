@@ -5,8 +5,8 @@ from pydantic_settings import BaseSettings
 from typing import Optional
 from dotenv import load_dotenv, main
 
-# Get project root directory (3 levels up from this file)
-PROJECT_ROOT = Path(__file__).parent.parent.parent
+# Get project root directory (4 levels up from this file)
+PROJECT_ROOT = Path(__file__).parent.parent.parent.parent
 
 # Add project root to Python path if not already present
 if str(PROJECT_ROOT) not in sys.path:
@@ -36,8 +36,9 @@ class Settings(BaseSettings):
     # DeepSeek configuration
     deepseek_api_url: str = Field(default='', alias="DEEPSEEK_API_URL")
     deepseek_api_key: str = Field(default='', alias="DEEPSEEK_API_KEY")
-    deepseek_thinking_model: str = Field(default="", alias="DEEPSEEK_THINKING_MODEL")
-    deepseek_no_thinking_model: str = Field(default="", alias="DEEPSEEK_NO_THINKING_MODEL")
+    deepseek_api_chat_model: str = Field(default="deepseek-chat", alias="DEEPSEEK_CHAT_MODEL")
+    deepseek_thinking_model: str = Field(default="deepseek-reasoner", alias="DEEPSEEK_THINKING_MODEL")
+    deepseek_no_thinking_model: str = Field(default="deepseek-chat", alias="DEEPSEEK_NO_THINKING_MODEL")
 
     # Qwen configuration
     qwen_api_url: str = Field(default="", alias="DASHSCOPE_BASE_URL")
