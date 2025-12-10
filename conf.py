@@ -47,4 +47,4 @@ def setup_logging():
 
 
 # 初始化日志配置
-logger = setup_logging()
+GlobalLogger = setup_logging()

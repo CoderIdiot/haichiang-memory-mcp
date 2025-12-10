@@ -11,7 +11,7 @@ sys.path.insert(0, str(PROJECT_ROOT))
 from typing import List, Optional, Sequence, Dict
 from openai import OpenAI
 
-from conf import logger
+from conf import GlobalLogger
 from src.inf.env.env_conf import G_Settings
 
 
@@ -53,7 +53,7 @@ class DeepSeekLLMClient:
 
         # 验证至少有一个可用模型
         if not self.thinking_model and not self.no_thinking_model:
-            logger.warning("未配置任何可用模型，请设置 DEEPSEEK_THINKING_MODEL 或 DEEPSEEK_NO_THINKING_MODEL")
+            GlobalLogger.warning("未配置任何可用模型，请设置 DEEPSEEK_THINKING_MODEL 或 DEEPSEEK_NO_THINKING_MODEL")
 
         # 初始化 OpenAI 客户端（兼容 DeepSeek API）
         self.client = OpenAI(
@@ -61,7 +61,7 @@ class DeepSeekLLMClient:
             base_url=self.base_url
         )
 
-        logger.info(f"DeepSeek 客户端初始化完成，thinking模型: {self.thinking_model or '未配置'}, "
+        GlobalLogger.info(f"DeepSeek 客户端初始化完成，thinking模型: {self.thinking_model or '未配置'}, "
                    f"非thinking模型: {self.no_thinking_model or '未配置'}, "
                    f"默认使用thinking: {self.default_use_thinking}")
 
@@ -111,13 +111,13 @@ class DeepSeekLLMClient:
 
                 if use_thinking:
                     if not self.thinking_model:
-                        logger.warning("未配置thinking模型，回退到非thinking模型")
+                        GlobalLogger.warning("未配置thinking模型，回退到非thinking模型")
                         chat_model = self.no_thinking_model
                     else:
                         chat_model = self.thinking_model
                 else:
                     if not self.no_thinking_model:
-                        logger.warning("未配置非thinking模型，回退到thinking模型")
+                        GlobalLogger.warning("未配置非thinking模型，回退到thinking模型")
                         chat_model = self.thinking_model
                     else:
                         chat_model = self.no_thinking_model
@@ -126,7 +126,7 @@ class DeepSeekLLMClient:
             if not chat_model:
                 raise ValueError("无可用的模型配置，请检查 DEEPSEEK_THINKING_MODEL 或 DEEPSEEK_NO_THINKING_MODEL 配置")
 
-            logger.debug(f"使用模型: {chat_model} (thinking: {use_thinking})")
+            GlobalLogger.debug(f"使用模型: {chat_model} (thinking: {use_thinking})")
 
             # 准备请求参数
             request_params = {
@@ -291,4 +291,4 @@ if __name__ == "__main__":
         print("助手回复:", response)
 
     except Exception as e:
-        logger.error(f"错误: {e}")
+        GlobalLogger.error(f"错误: {e}")

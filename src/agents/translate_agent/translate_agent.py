@@ -1,9 +1,9 @@
-from conf import logger
+from conf import GlobalLogger
 
 from src.inf.llm.deepseek import G_DeepSeekLLMClient
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     try:
-        logger.info('hi')
+        GlobalLogger.info("hi")
     except Exception as e:
-        logger.error(e)
+        GlobalLogger.error(e)

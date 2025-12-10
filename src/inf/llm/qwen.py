@@ -6,7 +6,7 @@ Qwen LLM 客户端模块
 from typing import List, Optional, Sequence, Dict
 from openai import OpenAI
 
-from conf import logger
+from conf import GlobalLogger
 from src.inf.env.env_conf import G_Settings
 
 
@@ -127,4 +127,4 @@ if __name__ == "__main__":
         print(f"前5个值: {vector[:5]}")
 
     except Exception as e:
-        logger.error(f"错误: {e}")
+        GlobalLogger.error(f"错误: {e}")

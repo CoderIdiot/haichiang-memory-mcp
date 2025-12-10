@@ -17,12 +17,12 @@ load_dotenv(PROJECT_ROOT / ".env")
 
 # Import logger from conf
 try:
-    from conf import logger
+    from conf import GlobalLogger
 except ImportError:
     # Fallback: if conf import fails, use basic logging
     import logging
     logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-    logger = logging.getLogger(__name__)
+    GlobalLogger = logging.getLogger(__name__)
 
 
 class Settings(BaseSettings):
@@ -61,8 +61,8 @@ G_Settings = Settings()
 
 if __name__ == "__main__":
     try:
-        logger.info("Loading .env file...")
-        logger.info(f'Global Settings: {G_Settings}')
-        logger.info("Settings loaded successfully")
+        GlobalLogger.info("Loading .env file...")
+        GlobalLogger.info(f'Global Settings: {G_Settings}')
+        GlobalLogger.info("Settings loaded successfully")
     except Exception as e:
-        logger.error(f"Error loading .env file: {e}")
+        GlobalLogger.error(f"Error loading .env file: {e}")
