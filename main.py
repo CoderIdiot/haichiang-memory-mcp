@@ -1,6 +1,4 @@
-import logging
 from conf import GlobalLogger
-
 
 def main():
     GlobalLogger.info("Hello from hc-mem!")
